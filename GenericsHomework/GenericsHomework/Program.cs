@@ -7,136 +7,71 @@ using System.Threading.Tasks;
 
 namespace GenericsHomework
 {
-    public class GenericList<T> where T:class
+    public class Matrix<T> where T: struct //type argument e value type (a class Matrix to hold a matrix of numbers (e.g. integers, floats, decimals)
     {
-        private T[] elemente;
-        private int count = 0;
-
-        public int Count
+        // fac o variabila(matrice) read only, pe care o voi structura in constructor... nu putem folosi const pentru ca nu pot modifica const in constructor, cum o declar asa ramane;
+        private readonly T[,] matrix = null;
+        private uint rows;
+        private uint columns;
+        //proprieati
+        public uint Rows
         {
-            get
-            {
-                return this.count;
-            }
+            get { return this.rows; }
+        }
+        public uint Columns
+        {
+            get { return this.columns; }
         }
 
-        //constructor 
-        public GenericList(int Capacity)
+        //Constructor 
+        public Matrix(uint Rows, uint Columns)
         {
-            this.elemente = new T[Capacity];
-        }
-        //Access element by index
-        public T this[int index]
-        {
-            get
-            {
-                if (index >= count)
-                {
-                    throw new IndexOutOfRangeException(String.Format(
-                        "Invalid index: {0}.", index));
-                }
-                T result = elemente[index];
-                return result;
-            }
+            this.matrix = new T[Rows, Columns];
+            this.rows = Rows;
+            this.columns = Columns;
         }
 
-        //Accessing element by index - v2
-        public T GiveElementByIndex(int index)
-        {
-            if (index > count)
-            {
-                throw new IndexOutOfRangeException($"Introduced index is out of range. We have only {this.count} elements");
-            }
-            else
-                return elemente[index];
-        }
-        //inserting element at given position
-        public void InsertElement(T element, int position)
-        {
-            if (position > elemente.Length)
-            {
-                throw new IndexOutOfRangeException($"We cannot insert a value on position {position} because the capacity is {elemente.Length}");
-            }
-            else
-            {
-                if (elemente[position] == null)
-                {
-                    elemente[position] = element;
-                }
-                else
-                {
-                    var x = elemente[position];
-                    elemente[position] = element;
-                    if (count >= elemente.Length)
-                    {
-                        throw new IndexOutOfRangeException($"The element {x} that was on position {position} couldn't be saved because we exceeded the capacity (max capacity:{elemente.Length}");
-                    }
-                    else
-                    {
-                        this.elemente[count] = element;
-                        count++;
-                    }
-                }
-            }
-        }
-
-        //Adding element
-        public void Add(T element)
-        {
-            if (count >= elemente.Length)
-            {
-                throw new IndexOutOfRangeException($"The list capacity of {elemente.Length} was exceeded.");
-            }
-            this.elemente[count] = element;
-            count++;
-        }
-        //Remove At given index
-        public void RemoveAt(int index)
-        {
-            //verific daca elemente nu e gol
-            if (elemente.Length == 0 || index > this.count || index<0)
-            {
-                throw new IndexOutOfRangeException("The specified index is not valid, because the Generic List is empty");
-            }
-            else
-            {
-                while (elemente[index + 1] != null)
-                    elemente[index] = elemente[index + 1];
-                Console.WriteLine($"Element from index {index} has been removed");
-            }
-        }
-        
-        //finding element by its value
-        public int? FindElementsPosition(T value)
-        {
-            for (var v=0; v<elemente.Length; v++)
-            {
-                if (elemente[v] == value)
-                    return v;
-            }
-            return null;
-        }
-
-        //clearing the list
-        public void ClearList()
-        {
-            for (var a=0;a<elemente.Length;a++)
-            {
-                elemente[a] = null;
-            }
-            this.count = 0;
-        }
-        //ToString()
         public override string ToString()
         {
-            StringBuilder c = new StringBuilder();
-            foreach (var v in elemente)
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 0; i < this.rows; i++)
             {
-                if (v!=null)
-                    c.Append($"Elementul {v}\n");
+                for (int j = 0; j < this.columns; j++)
+                    result.AppendFormat("{0,4}", this.matrix[i, j]);
+                result.AppendLine();
             }
-            return Convert.ToString(c);
+
+            return result.ToString();
         }
+
+        public void AddElementsManuallyToMatrix()
+        {
+            Console.WriteLine($"Please insert manually the elements from keyboard.\nRows:{this.rows}\nColumns:{this.columns}");
+            for (var i=0;i<this.rows;i++)
+            {
+                for (var j=0;j<this.columns;j++)
+                {
+                    var x = Console.ReadLine();
+                    
+                }
+            }
+        }
+
+        // Matrix indexer Implement an indexer this[row, col] to access the inner matrix cells.
+        public T this[uint row, uint col]
+        {
+            get
+            {
+                return this.matrix[row, col];
+            }
+            set
+            {
+                this.matrix[row, col] = value;
+            }
+        }
+        /*Matrix operations Implement the operators + and - (addition and subtraction of matrices of the same size) and * for matrix multiplication.
+         * Throw an exception when the operation cannot be performed. Implement the true operator (check for non-zero elements).*/
     }
     class Program
     {
