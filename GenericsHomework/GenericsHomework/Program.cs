@@ -89,6 +89,54 @@ namespace GenericsHomework
         {
             return BooleanOperator(matrix, false);
         }
+
+        public static Matrix<T> operator +(Matrix<T> matrix1, Matrix<T> matrix2)
+        {
+            if (matrix1.Rows != matrix2.Rows || matrix1.Columns != matrix2.Columns)
+            {
+                throw new InvalidOperationException("Invalid operation! We need 2 matrices with the same number of rows and columns");
+            }
+
+            Matrix<T> result = new Matrix<T>(matrix1.Rows, matrix1.Columns);
+            for (uint i = 0; i < result.Rows; i++)
+            {
+                for (uint j = 0; j < result.Columns; j++)
+                {
+                    result[i, j] = matrix1[i, j] + matrix2[i, j];
+                }
+            }
+            return result;
+        }
+
+        public static Matrix<T> operator -(Matrix<T> matrix1, Matrix<T> matrix2)
+        {
+            if (matrix1.Rows != matrix2.Rows || matrix1.Columns != matrix2.Columns)
+            {
+                throw new InvalidOperationException("Invalid operation! We need 2 matrices with the same number of rows and columns");
+            }
+
+            Matrix<T> result = new Matrix<T>(matrix1.Rows, matrix1.Columns);
+            for (uint i = 0; i < result.Rows; i++)
+            {
+                for (uint j = 0; j < result.Columns; j++)
+                {
+                    result[i, j] = matrix1[i, j] - matrix2[i, j];
+                }
+            }
+            return result;
+        }
+
+        public static Matrix<T> operator *(Matrix<T> matrix1, Matrix<T> matrix2)
+        {
+            Matrix<T> result = new Matrix<T>(matrix1.Rows, matrix2.Columns);
+
+            for (uint row = 0; row < result.Rows; row++)
+                for (uint col = 0; col < result.Columns; col++)
+                    for (uint k = 0; k < matrix1.Columns; k++) // or i < matrix2.Rows
+                        result[row, col] += matrix1[row, k] * matrix2[k, col];
+
+            return result;
+        }
     }
     class Program
     {
