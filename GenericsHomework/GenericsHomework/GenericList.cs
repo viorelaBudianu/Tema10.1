@@ -3,7 +3,7 @@ using System.Text;
 
 namespace GenericsHomework
 {
-    public class GenericList<T> where T:class
+    public class GenericList<T> where T : class, IComparable
     {
         private T[] elemente;
         private int count = 0;
@@ -21,11 +21,11 @@ namespace GenericsHomework
         {
             set
             {
-                if (value==null)
+                if (value == null)
                 {
                     throw new ArgumentNullException("Capacity cannot be null!");
                 }
-                if (value.GetType()!=12.GetType())
+                if (value.GetType() != 12.GetType())
                 {
                     throw new FormatException("Capacity should be Integer");
                 }
@@ -109,7 +109,7 @@ namespace GenericsHomework
         public void RemoveAt(int index)
         {
             //verific daca elemente nu e gol
-            if (elemente.Length == 0 || index > this.count || index<0)
+            if (elemente.Length == 0 || index > this.count || index < 0)
             {
                 throw new IndexOutOfRangeException("The specified index is not valid, because the Generic List is empty");
             }
@@ -120,11 +120,11 @@ namespace GenericsHomework
                 Console.WriteLine($"Element from index {index} has been removed");
             }
         }
-        
+
         //finding element by its value
         public int? FindElementsPosition(T value)
         {
-            for (var v=0; v<elemente.Length; v++)
+            for (var v = 0; v < elemente.Length; v++)
             {
                 if (elemente[v] == value)
                     return v;
@@ -135,7 +135,7 @@ namespace GenericsHomework
         //clearing the list
         public void ClearList()
         {
-            for (var a=0;a<elemente.Length;a++)
+            for (var a = 0; a < elemente.Length; a++)
             {
                 elemente[a] = null;
             }
@@ -147,7 +147,7 @@ namespace GenericsHomework
             StringBuilder c = new StringBuilder();
             foreach (var v in elemente)
             {
-                if (v!=null)
+                if (v != null)
                     c.Append($"Elementul {v}\n");
             }
             return Convert.ToString(c);
@@ -162,7 +162,54 @@ namespace GenericsHomework
             }
         }
         //PROBLEM 3 - TO BE DONE HOME 
+        private static bool GetMin(T a1, T a2)
+        {
+            if (a1.CompareTo(a2) < 0)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+        public T getArrayMin(T[] array)
+        {
+            if (array.Length == 0)
+                throw new NullReferenceException("We cannot find min value in an empty array");
+            var min = array[0];
+            for (var i = 1; i < array.Length; i++)
+            {
+                if (GetMin(array[i],min))
+                {
+                    min = array[i];
+                }
+            }
+            return min;
+        }
 
+        //MAX
+        private static bool GetMax(T a1, T a2)
+        {
+            if (a1.CompareTo(a2) > 0)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+        public T getArrayMax(T[] array)
+        {
+            if (array.Length == 0)
+                throw new NullReferenceException("We cannot find max value in an empty array");
+            var max = array[0];
+            for (var i = 1; i < array.Length; i++)
+            {
+                if (GetMin(array[i], max))
+                {
+                    max = array[i];
+                }
+            }
+            return max;
+        }
 
 
 

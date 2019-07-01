@@ -72,6 +72,23 @@ namespace GenericsHomework
         }
         /*Matrix operations Implement the operators + and - (addition and subtraction of matrices of the same size) and * for matrix multiplication.
          * Throw an exception when the operation cannot be performed. Implement the true operator (check for non-zero elements).*/
+        private static bool BooleanOperator(Matrix<T> matrix, bool op)
+        {
+            foreach (T element in matrix.matrix)
+                if (!element.Equals(default(T)))
+                    return op;
+
+            return !op;
+        }
+        public static bool operator true(Matrix<T> matrix)
+        {
+            return BooleanOperator(matrix, true);
+        }
+
+        public static bool operator false(Matrix<T> matrix)
+        {
+            return BooleanOperator(matrix, false);
+        }
     }
     class Program
     {
